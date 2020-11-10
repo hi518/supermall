@@ -12,16 +12,16 @@
 			<p><img src="~assets/img/detail/icon03.png" alt=""></p>
 			<p>收藏</p>
 		</div>
-		<div class="btn cart-btn" @click="addCart">加入购购物车</div>
+		<div class="btn cart-btn" @click="addToCart">加入购购物车</div>
 		<div class="btn buy-btn">购买</div>
 	</div>
 </template>
 
 <script>
 	export default {
-		name: "DetailBotBar",
+		name: "DetailBottomBar",
 		methods: {
-			addCart() {
+			addToCart() {
 				this.$emit('addCart')
 			}
 		}

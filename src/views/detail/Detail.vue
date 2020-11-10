@@ -5,7 +5,8 @@
       @titleClick="titleClick"
       ref="nav"
     ></detail-nav-bar>
-    <scroll
+    <div class="scroll">
+      <scroll
       class="content"
       :pullUpLoad="true"
       ref="scroll"
@@ -23,7 +24,8 @@
       <detail-comment-info ref="comment" :comment-info="commentInfo" />
       <goods-list ref="recommend" :goods="recommends"></goods-list>
     </scroll>
-    <detail-bottom-bar></detail-bottom-bar>
+    </div>
+    <detail-bottom-bar @addCart="addToCart"></detail-bottom-bar>
     <back-top @click.native="backTops" v-show="isShowBackTop" />
   </div>
 </template>
@@ -44,6 +46,8 @@ import DetailBottomBar from "./childComps/DetailBottomBar"
 import { getDetail, Goods, Shop, Param, getRecommend } from "network/detail";
 import { debounce } from "common/utils";
 import { itemListenerMixin,backTopMixin } from "common/mixin";
+
+import { mapActions } from "vuex"
 
 export default {
   name: "Detail",
@@ -76,6 +80,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['addCart']),
     topImageLoad() {
       // console.log("123");
       // console.log(this.$refs.detail);
@@ -126,6 +131,27 @@ export default {
       // 3.返回顶部
       this.listenShowBackTop(position);
     },
+    addToCart() {
+      // 1.获取购物车需要展示的信息
+      const product = {}
+      product.image = this.topImages[0];
+      product.title = this.goods.title;
+      product.desc = this.goods.desc;
+      product.price = this.goods.realPrive;
+      product.iid = this.iid;
+
+      // 2.将商品添加至购物车
+      // this.$store.cartList.push(product)
+      // this.$store.commit('addCart',product)
+      this.addCart(product).then(res => {
+        console.log(res);
+      })
+
+      // this.$store.dispatch('addCart',product).then(res => {
+      //   console.log(res);
+      // })
+    }
+
   },
   created() {
     // 1.保存传入的iid
@@ -226,7 +252,10 @@ export default {
   z-index: 9;
   background-color: #fff;
 }
-.content {
+.scroll {
   height: calc(100% - 44px - 49px);
+}
+.content {
+  height: 100%;
 }
 </style>
