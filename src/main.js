@@ -4,6 +4,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+console.log(123);
 Vue.prototype.$bus = new Vue()
 // app.mount('#app')
 new Vue({
